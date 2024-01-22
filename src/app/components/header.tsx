@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { Suspense } from 'react'
 import { CartWidget } from './cart-widget'
 import { FormSearch } from './form-search'
 
@@ -11,7 +12,9 @@ export function Header() {
           devstore
         </Link>
 
-        <FormSearch />
+        <Suspense fallback={null}>
+          <FormSearch />
+        </Suspense>
       </div>
 
       <div className='flex items-center gap-4'>
