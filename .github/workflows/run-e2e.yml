@@ -20,6 +20,23 @@ jobs:
           version: 8
           run_install: false
 
+      - name: Cache Cypress
+        uses: actions/cache@v2
+        with:
+          path: |
+            /home/runner/.cache/Cypress
+            # Adicione outros diretórios de cache, se necessário
+          key: ${{ runner.os }}-cypress-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-cypress-
+
+            - name: Install Dependencies and Persist Cypress
+          run: |
+            npm ci
+            npm install cypress
+          persist-credentials: false
+          id: install-cypress
+
       - name: Get pnpm store directory
         shell: bash
         run: |
