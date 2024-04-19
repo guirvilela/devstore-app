@@ -20,6 +20,23 @@ jobs:
           version: 8
           run_install: false
 
+      - name: Cache Cypress
+        uses: actions/cache@v2
+        with:
+          path: |
+            /home/runner/.cache/Cypress
+            # Adicione outros diretórios de cache, se necessário
+          key: ${{ runner.os }}-cypress-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-cypress-
+
+            - name: Install Dependencies and Persist Cypress
+          run: |
+            npm ci
+            npm install cypress
+          persist-credentials: false
+          id: install-cypress
+
       - name: Get pnpm store directory
         shell: bash
         run: |
@@ -40,7 +57,7 @@ jobs:
         uses: cypress-io/github-action@v6
         env:
           APP_URL: 'http://localhost:3000'
-          NEXT_PUBLIC_API_BASE_URL: 'https://devstore-api-pi-three.vercel.app'
+          PUBLIC_API_BASE_URL: 'https://devstore-api-pi-three.vercel.app'
         with:
           build: npm run build
           start: npm start
